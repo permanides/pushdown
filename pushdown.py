@@ -246,15 +246,18 @@ print("\n\nAutomata 3:")
 p_print(p2, aceptadas_3, "Palabras Aceptadas")
 p_print(p2, no_aceptadas_3, "Palabras no aceptadas")
 
-p4 = Pushdown(["q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8"], dict(), "q0", "z", ["q4", "q8"])
+p4 = Pushdown(["q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"], dict(), "q0", "z", ["q4", "q8"])
 
 p4.define_transition("q0z", "`", "N", "q1")
 p4.define_transition("q0z", "`", "N", "q5")
 
 p4.define_transition("q1z", "a", "Ia", "q1")
-p4.define_transition("q1a", "a", "Ia", "q2")
+p4.define_transition("q1a", "a", "Ia", "q9")
 
-p4.define_transition("q2a", "b", "Ia", "q2")
+p4.define_transition("q9a", "a", "Ia", "q9")
+p4.define_transition("q9a", "b", "P", "q2")
+
+p4.define_transition("q2a", "b", "P", "q2")
 p4.define_transition("q2a", "c", "P", "q3")
 
 p4.define_transition("q3a", "c", "P", "q3")
@@ -269,13 +272,12 @@ p4.define_transition("q6a", "b", "N", "q7")
 p4.define_transition("q7a", "b", "P", "q6")
 p4.define_transition("q7z", "`", "N", "q8")
 
-aceptadas_4 = ["aabc", "aaabbc", "aaaabccc", "aaaaabbccc", "aaaabbbc"]
+aceptadas_4 = ["aabbbb", "abb", "aaaabbcc", "aaaabccc", "aaaaabbccc"]
 no_aceptadas_4 = ["abc", "aabcccc", "aaabcccc", "abbbbc", "aabbc"]
 
-p4.compute(aceptadas_4[0])
-print(p4.configuration)
 
-#print("\n\nAutomata 4:")
-#p_print(p4, aceptadas_4, "Palabras Aceptadas")
-#p_print(p4, no_aceptadas_4, "Palabras no aceptadas")
+
+print("\n\nAutomata 4:")
+p_print(p4, aceptadas_4, "Palabras Aceptadas")
+p_print(p4, no_aceptadas_4, "Palabras no aceptadas")
 
