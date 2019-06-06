@@ -21,7 +21,7 @@ class Stack:
         operation = opt[0]
         symbol = opt[1]
         if operation == "I":
-            self.stack.append(symbol)
+            self.stack = self.stack + list(symbol)
         elif operation == "P":
             self.stack.pop()
 
@@ -50,7 +50,10 @@ class Pushdown:
         action = ""
 
         if stack_action[0] == "I":
-            action = stack_action[1]
+            if len(stack_action) > 2:
+                action = stack_action[1 : len(stack_action)]
+            else:
+                action = stack_action[1]
 
         if pair_to_tuple(pair) in self.transition:
             if symbol in self.transition[pair_to_tuple(pair)]:
@@ -280,4 +283,5 @@ no_aceptadas_4 = ["abc", "aabcccc", "aaabcccc", "abbbbc", "aabbc"]
 print("\n\nAutomata 4:")
 p_print(p4, aceptadas_4, "Palabras Aceptadas")
 p_print(p4, no_aceptadas_4, "Palabras no aceptadas")
+
 
