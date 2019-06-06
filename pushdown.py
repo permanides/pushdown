@@ -13,6 +13,9 @@ class Stack:
     def __repr__(self):
         return str(self)
 
+    def is_empty(self):
+        return not self.stack
+
     def head(self):
         if self.stack:
             return self.stack[len(self.stack) - 1]
@@ -29,8 +32,7 @@ class Stack:
         self.stack.append(symbol)
 
     def pop(self):
-        if self.stack != ['z']:
-            self.stack.pop();
+        self.stack.pop()
 
 
 class Pushdown:
@@ -50,10 +52,7 @@ class Pushdown:
         action = ""
 
         if stack_action[0] == "I":
-            if len(stack_action) > 2:
-                action = stack_action[1 : len(stack_action)]
-            else:
-                action = stack_action[1]
+            action = stack_action[1:]
 
         if pair_to_tuple(pair) in self.transition:
             if symbol in self.transition[pair_to_tuple(pair)]:
@@ -89,7 +88,7 @@ class Pushdown:
         for conf in self.configuration:
             print(conf)
 
-    def delta(self, symbol) -> None:
+    def delta(self, symbol):
         current_config = self.configuration
         new_conf = []
 
@@ -117,20 +116,22 @@ class Pushdown:
         return current
 
     def is_accepting(self):
-        accepted = False
+
+        for conf in self.configuration:
+            if conf[1].is_empty():
+                return True
 
         for state in self.current_conf():
             for accept in self.accept:
-                if (accept, self.z0) == state:
-                    accepted = True
-
-        return accepted
+                if accept == state[0]:
+                    return True
+        return False
 
 
 def pair_to_tuple(pair: str) -> tuple:
-    l = len(pair) - 1
+    length = len(pair) - 1
 
-    return (pair[0: l], pair[l])
+    return pair[0: length], pair[length]
 
 
 def epsilon_closure(pda: Pushdown, configuration: tuple):
@@ -197,7 +198,7 @@ print("Automata 1:")
 p_print(p1, aceptadas_1, "Palabras Aceptadas")
 p_print(p1, no_aceptadas_1, "Palabras no aceptadas")
 
-p3 = p2 = Pushdown(["q1", "q2", "q3", "q4", "q5"], dict(), "q1", "z", ["q5"])
+p3 = Pushdown(["q1", "q2", "q3", "q4", "q5"], dict(), "q1", "z", ["q5"])
 p3.define_transition("q1z", "a", "Ik", "q1")
 p3.define_transition("q1k", "a", "Ik", "q1")
 p3.define_transition("q1k", "b", "Ik", "q2")
